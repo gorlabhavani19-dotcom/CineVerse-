@@ -1,0 +1,19 @@
+ import { useDispatch } from 'react-redux'
+ import { options } from '../utils/Constant'
+ import { useEffect } from 'react'
+ import { addTrending } from '../utils/movieSlice';
+ const useTrending=()=>{
+  const dispatch=useDispatch();
+const trendingMovies=useSelector((store)=>store.movies.trendingMovies);
+ const getTrending=async() =>{
+  const data=await fetch('https://api.themoviedb.org/3/movie/top_rated', options)
+  const json=await data.json();
+ console.log(json);
+ dispatch(addTrending(json.results));
+ }
+ //useeffect for calling once and it rerenders the component only once
+ useEffect(()=>{ 
+    if(!trendingMovies) { getTrending(); }
+ },[]);
+};
+export default useTrending;
